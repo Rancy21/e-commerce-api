@@ -24,7 +24,7 @@ public class User {
     private String fullname;
     private String password;
     @Column(name = "is_active")
-    private boolean isActive;
+    private boolean isActive = true;
     @Enumerated(EnumType.STRING)
     private UserRole role;
 }
