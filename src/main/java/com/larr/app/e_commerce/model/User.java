@@ -2,6 +2,8 @@ package com.larr.app.e_commerce.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,4 +25,6 @@ public class User {
     private String password;
     @Column(name = "is_active")
     private boolean isActive;
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
 }
