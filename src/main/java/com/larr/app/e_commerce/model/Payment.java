@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,6 +28,7 @@ public class Payment {
     @JoinColumn(name = "user_id")
     private User user;
     private String currency;
+    @Enumerated(EnumType.STRING)
     private PaymentStatus status;
     private String method;
     @Column(name = "transaction_id")
