@@ -31,3 +31,5 @@ build/
 
 ### VS Code ###
 .vscode/
+src/main/resources/static/auth.html
+src/main/resources/static/index.html
