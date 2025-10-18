@@ -1,12 +1,17 @@
 package com.larr.app.e_commerce.security;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,8 +33,20 @@ public class AuthEntryPointJwt implements AuthenticationEntryPoint {
         // Logs an error message with details about my authentication failed
         logger.error("Unauthorized Error: {}", authException.getMessage());
 
-        // Sends back an HTTP 401 Unauthorized response to the client with a message.
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: Unauthorized");
+        // Set HTTP 401 Unauthorized
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+
+        // Create a JSON object for the response
+        Map<String, Object> body = new HashMap<>();
+        body.put("status", HttpServletResponse.SC_UNAUTHORIZED);
+        body.put("error", "Unauthorized");
+        body.put("message", authException.getMessage());
+        body.put("path", request.getServletPath());
+
+        // Write JSON body to response
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.writeValue(response.getOutputStream(), body);
     }
 
 }
