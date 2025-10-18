@@ -53,6 +53,10 @@ public class JwtFilter extends OncePerRequestFilter {
                 // Store the authenticated user in SecurityContent for controllers to retrieve
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
+        } catch (JwtValidationException ex) {
+            logger.error("JWT error: {}", ex.getMessage());
+            request.setAttribute("jwtErrorMessage", ex.getMessage());
+
         } catch (Exception e) {
             logger.error("Cannot set user authentication: {}", e.getMessage());
         }

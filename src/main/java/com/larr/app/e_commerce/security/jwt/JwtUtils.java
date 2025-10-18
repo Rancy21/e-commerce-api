@@ -4,14 +4,15 @@ import java.util.Date;
 
 import javax.crypto.SecretKey;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.WebUtils;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.Cookie;
@@ -24,8 +25,6 @@ public class JwtUtils {
 
     @Value("${jwt.expirationsMs}")
     private int jwtExp;
-
-    private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
     // Create a secret key for signing/verifying JWTs
     private SecretKey Key() {
@@ -69,10 +68,14 @@ public class JwtUtils {
         try {
             Jwts.parser().verifyWith(Key()).build().parse(authToken);
             return true;
-        } catch (Exception e) {
-            logger.error("Validation Token Error: {}", e.getMessage());
+        } catch (ExpiredJwtException e) {
+            throw new JwtValidationException("Token expired", e);
+        } catch (UnsupportedJwtException e) {
+            throw new JwtValidationException("Unsupported token", e);
+        } catch (MalformedJwtException e) {
+            throw new JwtValidationException("Invalid token", e);
+        } catch (IllegalArgumentException e) {
+            throw new JwtValidationException("Token is empty or null", e);
         }
-
-        return false;
     }
 }

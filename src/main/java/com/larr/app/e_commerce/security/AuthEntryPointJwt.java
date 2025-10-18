@@ -33,6 +33,10 @@ public class AuthEntryPointJwt implements AuthenticationEntryPoint {
         // Logs an error message with details about my authentication failed
         logger.error("Unauthorized Error: {}", authException.getMessage());
 
+        // Get possible JWT validation message (if set by JWTFilter)
+        String jwtErrorMessage = (String) request.getAttribute("jwtErrorMessage");
+        String message = (jwtErrorMessage != null) ? jwtErrorMessage : authException.getMessage();
+
         // Set HTTP 401 Unauthorized
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
@@ -41,7 +45,7 @@ public class AuthEntryPointJwt implements AuthenticationEntryPoint {
         Map<String, Object> body = new HashMap<>();
         body.put("status", HttpServletResponse.SC_UNAUTHORIZED);
         body.put("error", "Unauthorized");
-        body.put("message", authException.getMessage());
+        body.put("message", message);
         body.put("path", request.getServletPath());
 
         // Write JSON body to response
