@@ -24,6 +24,7 @@ public class Product {
     private Category category;
     private double price;
     private int quantity;
-    @Column(name = "is_acive")
+    private String img_url;
+    @Column(name = "is_active")
     private boolean isActive;
 }
