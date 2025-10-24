@@ -34,3 +34,4 @@ build/
 src/main/resources/static/auth.html
 src/main/resources/static/index.html
 src/main/resources/application.properties
+src/main/resources/application.yaml
