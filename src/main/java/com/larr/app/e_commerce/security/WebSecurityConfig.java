@@ -101,7 +101,9 @@ public class WebSecurityConfig {
                         // Allow internal dispatcher types( error and forwared requests))
                         .dispatcherTypeMatchers(DispatcherType.ERROR, DispatcherType.FORWARD).permitAll()
                         // Allow public resources and routes
-                        .requestMatchers("/", "/index.html", "/auth.html").permitAll()
+                        .requestMatchers("/", "/index.html", "/auth.html", "/reset-password.html",
+                                "/forgot-password.html")
+                        .permitAll()
                         // Allow public API endpoints for login/register
                         .requestMatchers("/api/auth/**").permitAll()
                         // Allow Spring's error endpoint
