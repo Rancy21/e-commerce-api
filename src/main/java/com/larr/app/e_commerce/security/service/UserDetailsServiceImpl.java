@@ -42,7 +42,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         // Return Spring Security's User object
         return org.springframework.security.core.userdetails.User.withUsername(user.getEmail())
-                .password(user.getPassword()).authorities(authorities).build();
+                .password(password).authorities(authorities).build();
     }
 
 }
