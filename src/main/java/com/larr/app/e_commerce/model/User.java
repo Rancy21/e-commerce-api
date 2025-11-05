@@ -27,4 +27,6 @@ public class User {
     private boolean isActive = true;
     @Enumerated(EnumType.STRING)
     private UserRole role;
+    private String provider;
+    private String providerId;
 }
