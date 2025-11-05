@@ -1,10 +1,12 @@
 package com.larr.app.e_commerce.security.service;
 
-import java.util.ArrayList;
+// import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,7 +29,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
 
         // Convert the user's role into GranteAuthority
-        List<GrantedAuthority> authorities = new ArrayList<>();
+        List<GrantedAuthority> authorities = Collections
+                .singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()));
+
+        String password = user.getPassword();
+
+        // For OAuth2 users (Google, Github), password is null
+        if (password == null || password.isEmpty()) {
+            // We use a placeholder that will never match any input
+            password = "{noop}OAUTH2_USER_NO_PASSWORD";
+        }
 
         // Return Spring Security's User object
         return org.springframework.security.core.userdetails.User.withUsername(user.getEmail())
