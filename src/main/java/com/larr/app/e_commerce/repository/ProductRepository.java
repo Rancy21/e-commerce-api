@@ -1,7 +1,7 @@
 package com.larr.app.e_commerce.repository;
 
 import java.util.List;
-import java.util.Locale.Category;
+import com.larr.app.e_commerce.model.Category;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
