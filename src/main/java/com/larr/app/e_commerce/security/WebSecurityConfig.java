@@ -23,12 +23,28 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.larr.app.e_commerce.security.jwt.JwtFilter;
 import com.larr.app.e_commerce.security.service.UserDetailsServiceImpl;
+import com.larr.app.e_commerce.service.CustomOAuth2UserService;
 
 import jakarta.servlet.DispatcherType;
 
+/**
+ * Main security configuration combining JWT and OAuth2.
+ * 
+ * This configuration supports TWO authentication methods:
+ * 1. Email/Password login with JWT tokens
+ * 2. OAuth2 login (Google, GitHub) with JWT tokens
+ * 
+ * Both methods result in JWT tokens stored in HTTP-only cookies.
+ * All subsequent requests use JWT for authentication (stateless).
+ * 
+ * @Configuration marks this as a Spring configuration class
+ * @EnableMethodSecurity enables method-level security (@PreAuthorize)
+ */
 @Configuration // Marks this as a Spring configuration class
 @EnableMethodSecurity // Enables mehtod-level security (eg., @PreAuthorize)
 public class WebSecurityConfig {
+
+    // Service for laoding user details from database
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
@@ -36,14 +52,28 @@ public class WebSecurityConfig {
     @Autowired
     private AuthEntryPointJwt authEntryPoint;
 
+    // Custom success handler for OAuth2 login that generates JWT tokens.
+    @Autowired
+    private OAuth2AuthenticationSuccessHandler oauth2SuccessHandler;
+
+    /**
+     * Custom failure handler for OAuth2 login errors.
+     */
+    @Autowired
+    private OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
+
     // Define a bean for your custom JWT filter
     @Bean
     public JwtFilter authenticationJwtTokenFilter() {
         return new JwtFilter();
     }
 
+    // Service that processes user data from OAuth2 providers
+    @Autowired
+    private CustomOAuth2UserService customOAuth2UserService;
+
     // Define authentication provider bean
-    // It tells Spring Security retrive user from database and validate password
+    // It tells Spring Security to retrieve user from database and validate password
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService);
@@ -71,7 +101,7 @@ public class WebSecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        // Allow request from your frontend server
+        // Allow request from your frontend server (adjust port as needed)
         configuration.setAllowedOrigins(List.of("http://localhost:3000"));
 
         // Allow sending cookies / credentials
@@ -89,7 +119,19 @@ public class WebSecurityConfig {
         return source;
     }
 
-    // Define the main security filter Chain
+    /**
+     * Main security filter chain configuration.
+     * 
+     * This is where we configure:
+     * - URL access rules (public vs authenticated)
+     * - JWT filter integration
+     * - OAuth2 login configuration
+     * - Session management (stateless)
+     * 
+     * @param http HttpSecurity builder
+     * @return SecurityFilterChain configured security chain
+     * @throws Exception if configuration fails
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable) // disable CSRF as it is not needed for stateless API
@@ -101,15 +143,29 @@ public class WebSecurityConfig {
                         // Allow internal dispatcher types( error and forwared requests))
                         .dispatcherTypeMatchers(DispatcherType.ERROR, DispatcherType.FORWARD).permitAll()
                         // Allow public resources and routes
-                        .requestMatchers("/", "/index.html", "/auth.html", "/reset-password.html",
-                                "/forgot-password.html")
+                        .requestMatchers("/", "/auth.html", "/reset-password.html",
+                                "/forgot-password.html", "/login**", "/home.html")
                         .permitAll()
                         // Allow public API endpoints for login/register
                         .requestMatchers("/api/auth/**").permitAll()
+                        // OAuth2 authorization endpoints (Google, Github login)
+                        .requestMatchers("/oauth2/**", "/login/oauth2/**").permitAll()
                         // Allow Spring's error endpoint
                         .requestMatchers("/error").permitAll()
                         // Require authentication for everything else
-                        .anyRequest().authenticated());
+                        .anyRequest().authenticated())
+                .oauth2Login(oauth2 -> oauth2
+                        // Custom login page URL
+                        .loginPage("/login")
+
+                        // Configure user info enpoint
+                        .userInfoEndpoint(userInfo -> userInfo
+                                // User our custom service to process OAuth2 user data
+                                .userService(customOAuth2UserService))
+                        // Use custom success handler that generates JWT
+                        .successHandler(oauth2SuccessHandler)
+                        // Custom failure Handler
+                        .failureHandler(oAuth2AuthenticationFailureHandler));
 
         // Register the authentication provider for user loading and password check
         http.authenticationProvider(authenticationProvider());
