@@ -1,12 +1,10 @@
 package com.larr.app.e_commerce.controller;
 
 import org.springframework.stereotype.Controller;
-// import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.larr.app.e_commerce.model.User;
-// import com.larr.app.e_commerce.security.CustomOAuth2User;
 import com.larr.app.e_commerce.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,17 +12,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * Controller for authentication-related endpoints.
- * 
+ *
  * Handles:
  * - Login page display
  * - Home page after successful login
  * - Current user information retrieval
  * - Logout
- * 
+ *
  * @Controller indicates this is a Spring MVC controller
  *             (returns view names, not JSON responses)
  */
