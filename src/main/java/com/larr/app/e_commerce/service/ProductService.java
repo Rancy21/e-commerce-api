@@ -20,8 +20,17 @@ public class ProductService {
     return repo.save(product);
   }
 
-  public Product findProduct(String id) {
+  public Product findProductById(String id) {
     Optional<Product> existingProduct = repo.findById(id);
+    if (existingProduct.isPresent()) {
+      return existingProduct.get();
+    } else {
+      return null;
+    }
+  }
+
+  public Product findProductByName(String name) {
+    Optional<Product> existingProduct = repo.findProductByName(name);
     if (existingProduct.isPresent()) {
       return existingProduct.get();
     } else {
