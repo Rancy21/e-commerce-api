@@ -12,13 +12,10 @@ import com.larr.app.e_commerce.repository.ProductRepository;
 
 @Service
 public class ProductService {
+
   private ProductRepository repo;
 
   @Autowired
-  public ProductService(ProductRepository repository) {
-    this.repo = repository;
-  }
-
   public Product createProduct(Product product) {
     return repo.save(product);
   }
@@ -82,7 +79,7 @@ public class ProductService {
     return repo.findAllByCategory(category);
   }
 
-  public List<Product> finProductsByName(String name) {
+  public List<Product> findProductsByName(String name) {
     return repo.findByNameContainingIgnoreCase(name);
   }
 }
