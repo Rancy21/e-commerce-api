@@ -4,12 +4,15 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.larr.app.e_commerce.model.Category;
 import com.larr.app.e_commerce.model.Product;
+import com.larr.app.e_commerce.service.CategoryService;
 import com.larr.app.e_commerce.service.ProductService;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +26,10 @@ public class ProductController {
   @Autowired
   ProductService service;
 
-  @PostMapping("/save")
+  @Autowired
+  CategoryService categoryService;
+
+  @PostMapping(value = "/save", consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> saveProduct(@RequestBody Product product) {
     // boolean productExists = false;
     return null;
@@ -96,7 +102,18 @@ public class ProductController {
 
   @PostMapping("/findByCategory")
   public ResponseEntity<?> findProductsByCategory(@PathVariable String category) {
-    return null;
+    Category productCategory = categoryService.findCategoryByName(category);
+    if (productCategory != null) {
+      List<Product> products = service.findProductsByCategory(productCategory);
+      if (products != null && !products.isEmpty()) {
+        return ResponseEntity.ok(products);
+      } else {
+        return new ResponseEntity<>("No products found for the given category", HttpStatus.NOT_FOUND);
+      }
+    } else {
+      return new ResponseEntity<>("Category " + category + " not found", HttpStatus.NOT_FOUND);
+    }
+
   }
 
   @PostMapping("/findByName")
