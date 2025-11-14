@@ -9,7 +9,7 @@ import com.larr.app.e_commerce.model.PasswordResetToken;
 import com.larr.app.e_commerce.model.User;
 
 @Repository
-public interface PasswordResetRepository extends JpaRepository<PasswordResetToken, String> {
+public interface PasswordResetRepository extends JpaRepository<PasswordResetToken, Long> {
     Optional<PasswordResetToken> findByToken(String token);
 
     void deleteByUser(User user);
