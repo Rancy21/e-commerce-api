@@ -12,10 +12,9 @@ import com.larr.app.e_commerce.repository.ProductRepository;
 
 @Service
 public class ProductService {
-
+  @Autowired
   private ProductRepository repo;
 
-  @Autowired
   public Product createProduct(Product product) {
     return repo.save(product);
   }
