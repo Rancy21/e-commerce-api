@@ -31,8 +31,13 @@ public class ProductController {
 
   @PostMapping(value = "/save", consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> saveProduct(@RequestBody Product product) {
-    // boolean productExists = false;
-    return null;
+    Product existingProduct = service.findProductByName(product.getName());
+    if (existingProduct != null) {
+      return ResponseEntity.ok(service.createProduct(product));
+    } else {
+      return new ResponseEntity<>("Product with name: " + product.getName() + " already exists",
+          HttpStatus.BAD_REQUEST);
+    }
   }
 
   @GetMapping("/find")
@@ -70,6 +75,7 @@ public class ProductController {
     }
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/updateName")
   public ResponseEntity<?> updateProductName(@PathVariable String id, @PathVariable String name) {
     Product product = service.findProductById(id);
@@ -80,6 +86,7 @@ public class ProductController {
     }
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @PostMapping(value = "/updatePrice")
   public ResponseEntity<?> updateProductPrice(@PathVariable String id, @PathVariable double price) {
     Product product = service.findProductById(id);
@@ -90,6 +97,7 @@ public class ProductController {
     }
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/updateImage")
   public ResponseEntity<?> updateProductImageUrl(@PathVariable String id, @PathVariable String url) {
     Product product = service.findProductById(id);
@@ -119,6 +127,16 @@ public class ProductController {
   @PostMapping("/findByName")
   public ResponseEntity<?> findProductsByName(@PathVariable String name) {
     List<Product> products = service.findProductsByName(name);
+    if (products == null || products.isEmpty()) {
+      return new ResponseEntity<>("NO product match", HttpStatus.NOT_FOUND);
+    } else {
+      return ResponseEntity.ok(products);
+    }
+  }
+
+  @PostMapping("/all")
+  public ResponseEntity<?> findProducts() {
+    List<Product> products = service.findAllProducts();
     if (products == null || products.isEmpty()) {
       return new ResponseEntity<>("NO product match", HttpStatus.NOT_FOUND);
     } else {
