@@ -90,4 +90,8 @@ public class ProductService {
   public List<Product> findProductsByName(String name) {
     return repo.findByNameContainingIgnoreCase(name);
   }
+
+  public List<Product> findAllProducts() {
+    return repo.findAll();
+  }
 }
