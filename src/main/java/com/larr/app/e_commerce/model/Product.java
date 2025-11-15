@@ -27,5 +27,5 @@ public class Product {
     @Column(name = "img_url")
     private String imgUrl;
     @Column(name = "is_active")
-    private boolean isActive;
+    private boolean isActive = true;
 }
