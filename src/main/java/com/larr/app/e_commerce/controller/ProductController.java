@@ -17,7 +17,6 @@ import com.larr.app.e_commerce.service.CategoryService;
 import com.larr.app.e_commerce.service.ProductService;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -56,7 +55,7 @@ public class ProductController {
 
   @PreAuthorize("hasRole('ADMIN')")
   @PostMapping(value = "/increase")
-  public ResponseEntity<?> increaseProductQuantity(@RequestParam String id, @PathVariable int quantity) {
+  public ResponseEntity<?> increaseProductQuantity(@RequestParam String id, @RequestParam int quantity) {
     Product product = service.findProductById(id);
     if (product != null) {
       return ResponseEntity.ok(service.increaseProductQuantity(product, quantity));
@@ -72,7 +71,7 @@ public class ProductController {
       if (product.getQuantity() > quantity) {
         return ResponseEntity.ok(service.increaseProductQuantity(product, quantity));
       } else {
-        return new ResponseEntity<>("Cannot decease. not enough in stock", HttpStatus.CONFLICT);
+        return new ResponseEntity<>("Cannot decrease. Not enough in stock", HttpStatus.CONFLICT);
       }
     } else {
       return new ResponseEntity<>("Prouduct with ID: " + id + " not found", HttpStatus.NOT_FOUND);
