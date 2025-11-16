@@ -69,7 +69,7 @@ public class ProductController {
     Product product = service.findProductById(id);
     if (product != null) {
       if (product.getQuantity() > quantity) {
-        return ResponseEntity.ok(service.increaseProductQuantity(product, quantity));
+        return ResponseEntity.ok(service.decreaseProductQuantity(product, quantity));
       } else {
         return new ResponseEntity<>("Cannot decrease. Not enough in stock", HttpStatus.CONFLICT);
       }
