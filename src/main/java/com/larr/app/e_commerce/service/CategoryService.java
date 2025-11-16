@@ -3,7 +3,6 @@ package com.larr.app.e_commerce.service;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.larr.app.e_commerce.model.Category;
@@ -11,8 +10,11 @@ import com.larr.app.e_commerce.repository.CategoryRepository;
 
 @Service
 public class CategoryService {
-  @Autowired
-  private CategoryRepository repository;
+  private final CategoryRepository repository;
+
+  public CategoryService(CategoryRepository repository) {
+    this.repository = repository;
+  }
 
   public Category findCategoryById(String id) {
     Optional<Category> existingCategory = repository.findById(id);

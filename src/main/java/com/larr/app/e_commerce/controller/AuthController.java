@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.larr.app.e_commerce.model.User;
 import com.larr.app.e_commerce.service.UserService;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -29,8 +28,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 @Controller
 public class AuthController {
-    @Autowired
-    UserService userService;
+    private final UserService userService;
+
+    public AuthController(UserService userService) {
+        this.userService = userService;
+    }
 
     // Display the login page
     @GetMapping("/login")

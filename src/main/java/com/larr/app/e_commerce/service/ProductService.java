@@ -3,7 +3,7 @@ package com.larr.app.e_commerce.service;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.larr.app.e_commerce.model.Category;
@@ -12,8 +12,11 @@ import com.larr.app.e_commerce.repository.ProductRepository;
 
 @Service
 public class ProductService {
-  @Autowired
-  private ProductRepository repo;
+  private final ProductRepository repo;
+
+  public ProductService(ProductRepository repo) {
+    this.repo = repo;
+  }
 
   public Product createProduct(Product product) {
     return repo.save(product);

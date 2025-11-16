@@ -3,7 +3,6 @@ package com.larr.app.e_commerce.controller;
 import java.util.List;
 import java.util.function.Function;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,11 +27,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @RequestMapping(value = "/api/products")
 public class ProductController {
-  @Autowired
-  ProductService service;
+  private final ProductService service;
+  private final CategoryService categoryService;
 
-  @Autowired
-  CategoryService categoryService;
+  public ProductController(ProductService service, CategoryService categoryService) {
+    this.service = service;
+    this.categoryService = categoryService;
+  }
 
   @PostMapping(value = "/save", consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> saveProduct(@RequestBody Product product) {
