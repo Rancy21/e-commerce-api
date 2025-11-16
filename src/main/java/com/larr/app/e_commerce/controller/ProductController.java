@@ -18,6 +18,7 @@ import com.larr.app.e_commerce.model.Product;
 import com.larr.app.e_commerce.service.CategoryService;
 import com.larr.app.e_commerce.service.ProductService;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -69,7 +70,7 @@ public class ProductController {
         return new ResponseEntity<>("Quantity to decrease must be positive", HttpStatus.BAD_REQUEST);
       }
       if (product.getQuantity() >= request.getQuantity()) {
-        return ResponseEntity.ok(service.increaseProductQuantity(product, request.getQuantity()));
+        return ResponseEntity.ok(service.decreaseProductQuantity(product, request.getQuantity()));
       } else {
         return new ResponseEntity<>("Cannot decrease. Not enough in stock", HttpStatus.CONFLICT);
       }
@@ -142,6 +143,11 @@ public class ProductController {
     } else {
       return ResponseEntity.ok(products);
     }
+  }
+
+  @DeleteMapping(value = "/{id}/delete")
+  private ResponseEntity<?> deleteProduct(@PathVariable String id) {
+    return findProductByIdAndProceed(id, product -> ResponseEntity.ok(service.deleteProduct(product)));
   }
 
   private ResponseEntity<?> findProductByIdAndProceed(String id, Function<Product, ResponseEntity<?>> action) {
