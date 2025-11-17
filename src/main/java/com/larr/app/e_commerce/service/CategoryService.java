@@ -34,6 +34,11 @@ public class CategoryService {
     }
   }
 
+  public Category updCategoryName(Category category, String name) {
+    category.setName(name);
+    return repository.save(category);
+  }
+
   public List<Category> findAllCategories() {
     return repository.findAll();
   }
