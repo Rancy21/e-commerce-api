@@ -1,0 +1,35 @@
+package com.larr.app.e_commerce.security.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import com.larr.app.e_commerce.model.Cart;
+import com.larr.app.e_commerce.repository.CartRepository;
+
+@Service
+public class CartService {
+  private final CartRepository repository;
+
+  public CartService(CartRepository repository) {
+    this.repository = repository;
+  }
+
+  public Cart createCart(Cart cart) {
+    return repository.save(cart);
+  }
+
+  public Cart findCart(String id) {
+    Optional<Cart> cart = repository.findById(id);
+    if (cart.isPresent()) {
+      return cart.get();
+    } else {
+      return null;
+    }
+  }
+
+  public List<Cart> findAllCarts() {
+    return repository.findAll();
+  }
+}
