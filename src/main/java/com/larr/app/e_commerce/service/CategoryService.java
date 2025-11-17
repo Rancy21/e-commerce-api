@@ -44,6 +44,6 @@ public class CategoryService {
   }
 
   public List<Category> findAllCategories(String name) {
-    return repository.findByNameIgnoreCase(name);
+    return repository.findByNameContainingIgnoreCase(name);
   }
 }
