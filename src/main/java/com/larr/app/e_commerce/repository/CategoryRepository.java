@@ -12,7 +12,7 @@ import com.larr.app.e_commerce.model.Category;
 public interface CategoryRepository extends JpaRepository<Category, String> {
     List<Category> findAll();
 
-    List<Category> findByNameIgnoreCase(String name);
+    List<Category> findByNameContainingIgnoreCase(String name);
 
     Optional<Category> findCategoryByName(String name);
 }
