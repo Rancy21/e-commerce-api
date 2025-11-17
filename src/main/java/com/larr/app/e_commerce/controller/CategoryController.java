@@ -51,7 +51,7 @@ public class CategoryController {
     return new ResponseEntity<>("Category with: " + id + " does not exist", HttpStatus.NOT_FOUND);
   }
 
-  @GetMapping(value = "/{id}/all")
+  @GetMapping(value = "/all")
   public ResponseEntity<?> findAllCategories() {
     List<Category> categories = service.findAllCategories();
 
@@ -62,7 +62,7 @@ public class CategoryController {
     return ResponseEntity.ok(categories);
   }
 
-  @GetMapping(value = "/{id}/all-by-name")
+  @GetMapping(value = "/all-by-name")
   public ResponseEntity<?> findAllCategoriesByName(@RequestParam String name) {
     List<Category> categories = service.findAllCategories(name);
 
