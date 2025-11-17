@@ -52,6 +52,11 @@ public class ProductController {
     return findProductByIdAndProceed(id, ResponseEntity::ok);
   }
 
+  @DeleteMapping("/{id}/delete")
+  public ResponseEntity<?> deleteProduct(@PathVariable String id) {
+    return findProductByIdAndProceed(id, product -> ResponseEntity.ok(service.deleteProduct(product)));
+  }
+
   @PreAuthorize("hasRole('ADMIN')")
   @PatchMapping(value = "/{id}/increase")
   public ResponseEntity<?> increaseProductQuantity(@PathVariable String id, @RequestBody ProductUpdateRequest request) {
@@ -144,11 +149,6 @@ public class ProductController {
     } else {
       return ResponseEntity.ok(products);
     }
-  }
-
-  @DeleteMapping(value = "/{id}/delete")
-  private ResponseEntity<?> deleteProduct(@PathVariable String id) {
-    return findProductByIdAndProceed(id, product -> ResponseEntity.ok(service.deleteProduct(product)));
   }
 
   private ResponseEntity<?> findProductByIdAndProceed(String id, Function<Product, ResponseEntity<?>> action) {
