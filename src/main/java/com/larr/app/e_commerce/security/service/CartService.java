@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.larr.app.e_commerce.model.Cart;
+import com.larr.app.e_commerce.model.CartStatus;
 import com.larr.app.e_commerce.repository.CartRepository;
 
 @Service
@@ -27,6 +28,18 @@ public class CartService {
     } else {
       return null;
     }
+  }
+
+  public Cart seCartToOrdered(Cart cart) {
+    cart.setStatus(CartStatus.ordered);
+
+    return repository.save(cart);
+  }
+
+  public Cart setCartToAbandoned(Cart cart) {
+    cart.setStatus(CartStatus.abandoned);
+
+    return repository.save(cart);
   }
 
   public List<Cart> findAllCarts() {
