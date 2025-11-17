@@ -13,6 +13,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -25,7 +27,7 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     @Enumerated(EnumType.STRING)
-    private CartStatus status;
+    private CartStatus status = CartStatus.active;
     @CreatedDate
     @Column(updatable = false, name = "created_at")
     private LocalDateTime createdAt;
@@ -34,4 +36,7 @@ public class Cart {
     private LocalDateTime updatedAt;
     @Column(name = "total_price")
     private double totalprice;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }
