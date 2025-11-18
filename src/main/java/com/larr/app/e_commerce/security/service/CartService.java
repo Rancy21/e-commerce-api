@@ -30,15 +30,17 @@ public class CartService {
     }
   }
 
-  public Cart seCartToOrdered(Cart cart) {
-    cart.setStatus(CartStatus.ordered);
-
-    return repository.save(cart);
+  public Cart findCart(String userId, CartStatus status) {
+    Optional<Cart> cart = repository.findCartByUserIdAndStatus(userId, status);
+    if (cart.isPresent()) {
+      return cart.get();
+    } else {
+      return null;
+    }
   }
 
-  public Cart setCartToAbandoned(Cart cart) {
-    cart.setStatus(CartStatus.abandoned);
-
+  public Cart updateCart(CartStatus status, Cart cart) {
+    cart.setStatus(status);
     return repository.save(cart);
   }
 
