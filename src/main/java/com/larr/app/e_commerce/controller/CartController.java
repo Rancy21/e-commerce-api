@@ -31,7 +31,7 @@ public class CartController {
     this.userService = userService;
   }
 
-  @PostMapping("/{id}")
+  @PostMapping("/save")
   public ResponseEntity<?> createCart(@RequestBody Cart cart) {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
