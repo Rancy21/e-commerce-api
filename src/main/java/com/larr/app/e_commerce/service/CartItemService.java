@@ -20,7 +20,7 @@ public class CartItemService {
     return repository.save(item);
   }
 
-  public CartItem updCartItemQuantity(CartItem item, int quantity) {
+  public CartItem updateCartItemQuantity(CartItem item, int quantity) {
     item.setQuantity(quantity);
     item.setSubtotal(quantity * item.getPrice());
 
