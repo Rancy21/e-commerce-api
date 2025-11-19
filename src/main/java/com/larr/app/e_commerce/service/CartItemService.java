@@ -3,10 +3,14 @@ package com.larr.app.e_commerce.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.larr.app.e_commerce.model.Cart;
 import com.larr.app.e_commerce.model.CartItem;
 import com.larr.app.e_commerce.repository.CartItemRepository;
 
+@Service
 public class CartItemService {
 
   private final CartItemRepository repository;
@@ -44,8 +48,9 @@ public class CartItemService {
     return repository.findByCart(cart);
   }
 
-  public void removeAllItemFromCart(Cart cart) {
-    repository.deleteAllByCart(cart);
+  @Transactional
+  public void removeAllItemFromCart(String cartId) {
+    repository.deleteByCart(cartId);
   }
 
 }
