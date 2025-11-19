@@ -59,8 +59,7 @@ public class CartItemController {
 
   @DeleteMapping
   public ResponseEntity<?> removeAllItemsFromCart(@PathVariable String cartId) {
-    Cart cart = cartService.findCart(cartId);
-    service.removeAllItemFromCart(cart);
+    service.removeAllItemFromCart(cartId);
     return ResponseEntity.ok("Deleted successfully");
   }
 
