@@ -39,8 +39,13 @@ public class CartService {
     }
   }
 
-  public Cart updateCart(CartStatus status, Cart cart) {
+  public Cart updateCartStatus(CartStatus status, Cart cart) {
     cart.setStatus(status);
+    return repository.save(cart);
+  }
+
+  public Cart updateCartPrice(Cart cart, double price) {
+    cart.setTotalprice(price);
     return repository.save(cart);
   }
 
