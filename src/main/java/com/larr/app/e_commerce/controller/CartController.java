@@ -47,9 +47,14 @@ public class CartController {
     return findCartAndProceed(id, ResponseEntity::ok);
   }
 
-  @PatchMapping("/{id}")
-  public ResponseEntity<?> updateCart(@PathVariable String id, @RequestBody CartUpdateRequest request) {
-    return findCartAndProceed(id, cart -> ResponseEntity.ok(service.updateCart(request.getStatus(), cart)));
+  @PatchMapping("/{id}/status")
+  public ResponseEntity<?> updateCartStatus(@PathVariable String id, @RequestBody CartUpdateRequest request) {
+    return findCartAndProceed(id, cart -> ResponseEntity.ok(service.updateCartStatus(request.getStatus(), cart)));
+  }
+
+  @PatchMapping("/{id}/price")
+  public ResponseEntity<?> updateCartPrice(@PathVariable String id, @RequestBody CartUpdateRequest request) {
+    return findCartAndProceed(id, cart -> ResponseEntity.ok(service.updateCartPrice(cart, request.getTotalprice())));
   }
 
   private ResponseEntity<?> findCartAndProceed(String id, Function<Cart, ResponseEntity<?>> action) {
