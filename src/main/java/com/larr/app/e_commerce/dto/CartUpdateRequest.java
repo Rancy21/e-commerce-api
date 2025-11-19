@@ -6,4 +6,5 @@ import com.larr.app.e_commerce.model.CartStatus;
 @Data
 public class CartUpdateRequest {
   private CartStatus status;
+  private double totalprice;
 }
