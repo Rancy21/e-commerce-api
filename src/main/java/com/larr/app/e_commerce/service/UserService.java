@@ -29,6 +29,10 @@ public class UserService {
         return repository.findUserByEmail(email);
     }
 
+    public User getUserById(String id) {
+        return repository.findById(id).isPresent() ? repository.findById(id).get() : null;
+    }
+
     public User deleteUser(User user) {
         user.setActive(false);
         return repository.save(user);
