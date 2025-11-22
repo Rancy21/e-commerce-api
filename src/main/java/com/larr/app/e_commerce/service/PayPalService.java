@@ -101,7 +101,7 @@ public class PayPalService {
    * Capture the payment after the user approves it on PayPal
    */
   @Transactional
-  public Payment complPayment(String token) throws IOException {
+  public Payment completePayment(String token) throws IOException {
     // the token is the order ID returned by paypal in the success url
 
     OrdersCaptureRequest request = new OrdersCaptureRequest(token);

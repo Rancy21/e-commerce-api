@@ -52,7 +52,7 @@ public class PayPalController {
   @GetMapping("/success")
   public ResponseEntity<?> successPay(@RequestParam("token") String token, @RequestParam("PayerID") String payerId) {
     try {
-      service.complPayment(token);
+      service.completePayment(token);
       return ResponseEntity.ok("Payment completed successfully!");
     } catch (IOException e) {
       return ResponseEntity.internalServerError().body("Payment capture failed");
