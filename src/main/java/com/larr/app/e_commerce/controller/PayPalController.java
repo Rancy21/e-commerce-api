@@ -14,7 +14,7 @@ import com.larr.app.e_commerce.dto.PaymentRequest;
 import com.larr.app.e_commerce.model.Cart;
 import com.larr.app.e_commerce.model.User;
 import com.larr.app.e_commerce.security.service.CartService;
-import com.larr.app.e_commerce.service.PaymentService;
+import com.larr.app.e_commerce.service.PayPalService;
 import com.larr.app.e_commerce.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/payment")
 @RequiredArgsConstructor
 public class PayPalController {
-  private final PaymentService service;
+  private final PayPalService service;
   private final CartService cartService;
   private final UserService userService;
 

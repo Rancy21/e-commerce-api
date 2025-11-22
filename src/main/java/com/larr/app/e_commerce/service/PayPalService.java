@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class PaymentService {
+public class PayPalService {
 
   private final PayPalHttpClient payPalHttpClient;
   private final PaymentRepository repository;
