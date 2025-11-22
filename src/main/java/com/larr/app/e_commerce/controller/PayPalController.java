@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/payment")
 @RequiredArgsConstructor
-public class PaymentController {
+public class PayPalController {
   private final PaymentService service;
   private final CartService cartService;
   private final UserService userService;
@@ -57,5 +57,10 @@ public class PaymentController {
     } catch (IOException e) {
       return ResponseEntity.internalServerError().body("Payment capture failed");
     }
+  }
+
+  @GetMapping("/cancel")
+  public ResponseEntity<?> cancelPay() {
+    return ResponseEntity.ok("Payment cancelled");
   }
 }
