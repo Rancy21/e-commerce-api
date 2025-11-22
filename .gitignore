@@ -38,3 +38,4 @@ src/main/resources/application.yaml
 src/main/resources/static/reset-password.html
 src/main/resources/static/forgot-password.html
 src/main/resources/static/home.html
+AGENTS.md
