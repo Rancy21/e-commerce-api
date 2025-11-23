@@ -52,4 +52,8 @@ public class CartService {
   public List<Cart> findAllCarts() {
     return repository.findAll();
   }
+
+  public List<Cart> findAllByUser(String userId) {
+    return repository.findByUserId(userId);
+  }
 }
